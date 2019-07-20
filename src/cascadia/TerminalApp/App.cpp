@@ -18,6 +18,7 @@ using namespace winrt::Microsoft::Terminal::Settings;
 using namespace winrt::Microsoft::Terminal::TerminalControl;
 using namespace winrt::Microsoft::Terminal::TerminalConnection;
 using namespace ::TerminalApp;
+using namespace winrt::TerminalApp;
 
 // Note: Generate GUID using TlgGuid.exe tool
 TRACELOGGING_DEFINE_PROVIDER(
@@ -77,6 +78,7 @@ namespace winrt::TerminalApp::implementation
         */
         auto terminalPage = winrt::make_self<TerminalPage>();
         _root = terminalPage.as<winrt::Windows::UI::Xaml::Controls::Control>();
+        terminalPage->SetSettings(_settings.get());
         _tabContent = terminalPage->TabContent();
         _tabRow = terminalPage->TabRow();
         _tabView = _tabRow.TabView();
@@ -1428,6 +1430,36 @@ namespace winrt::TerminalApp::implementation
         }
     }
 
+    winrt::TerminalApp::AppKeyBindings App::GetKeybindingsFromSettings()
+    {
+        return _settings->GetKeybindings();
+    }
+    
+    /*std::basic_string_view<Profile> App::GetProfilesFromSettings()
+    {
+        return _settings->GetProfiles();
+    }
+
+    GUID App::GetDefaultProfileFromSettings()
+    {
+        return _settings->GlobalSettings().GetDefaultProfile();
+    }
+
+    TerminalSettings App::MakeSettingsFromProfile(GUID profileGuid)
+    {
+        return _settings->MakeSettings(profileGuid);
+    }
+
+    Profile* App::FindProfileFromSettings(GUID profileGuid)
+    {
+        return _settings->FindProfile(profileGuid);
+    }
+
+    bool App::GetAlwaysShowTabs()
+    {
+        return _settings->GlobalSettings().GetAlwaysShowTabs();
+    }*/
+    
     // -------------------------------- WinRT Events ---------------------------------
     // Winrt events need a method for adding a callback to the event and removing the callback.
     // These macros will define them both for you.
